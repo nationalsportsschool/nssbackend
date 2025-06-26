@@ -208,7 +208,57 @@ Use the following test card details:
    npm start
    ```
 
-## 📋 Future Enhancements
+## � Deployment
+
+### Deploy to Render
+
+This project includes a `render.yaml` file for easy deployment to Render.com:
+
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Add Render deployment config"
+   git push origin main
+   ```
+
+2. **Deploy on Render**
+   - Go to [Render Dashboard](https://dashboard.render.com)
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Render will automatically detect the `render.yaml` file
+
+3. **Set Environment Variables**
+   In Render Dashboard, add these environment variables:
+   ```
+   SUPABASE_URL=your_supabase_project_url
+   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+   RAZORPAY_KEY_ID=your_razorpay_key_id
+   RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+   ```
+
+4. **Deploy**
+   - Click "Deploy Web Service"
+   - Your API will be available at: `https://nss-backend.onrender.com`
+   - Health check endpoint: `https://nss-backend.onrender.com/api/health`
+
+### Manual Deployment
+
+For other platforms, ensure these environment variables are set:
+- `NODE_ENV=production`
+- `PORT=10000` (or your platform's port)
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `RAZORPAY_KEY_ID`
+- `RAZORPAY_KEY_SECRET`
+
+Build and start commands:
+```bash
+npm install
+npm run build
+npm start
+```
+
+## �📋 Future Enhancements
 
 - [ ] Database integration (MongoDB/PostgreSQL)
 - [ ] JWT authentication
