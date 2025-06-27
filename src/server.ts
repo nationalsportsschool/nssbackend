@@ -18,17 +18,13 @@ dotenv.config();
 const app = express();
 
 // Middleware
+// Add CORS support to allow frontend deployed on Vercel to access this backend.
+// Use the 'cors' package and allow only specific origins like https://app.nationalsportsschool.in
+// Also handle preflight requests for all routes
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? [
-        'https://app.nationalsportsschool.in', // Primary production domain
-        'https://nss-frontend.vercel.app',
-        'https://nss.vercel.app',
-        'https://nationalsportsschool.vercel.app'
-      ]
-    : ['http://localhost:5173', 'http://localhost:3000'],
+  origin: ['https://app.nationalsportsschool.in'], // Vercel frontend domain
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  credentials: true,
 }));
 
 app.use(express.json({ limit: '10mb' }));
