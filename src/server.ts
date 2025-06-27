@@ -21,14 +21,22 @@ const app = express();
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? (origin, callback) => {
-        // Allow any vercel.app domain or undefined (for same-origin requests)
-        if (!origin || origin.includes('.vercel.app') || origin.includes('localhost')) {
+        // Allow specific production domain and any vercel.app domain
+        const allowedOrigins = [
+          'https://app.nationalsportsschool.in',  // Main production domain
+        ];
+        
+        if (!origin || 
+            allowedOrigins.includes(origin) || 
+            origin.includes('.vercel.app') || 
+            origin.includes('localhost')) {
           callback(null, true);
         } else {
           callback(new Error('Not allowed by CORS'));
         }
       }
     : ['http://localhost:5173', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   credentials: true
 }));
 
