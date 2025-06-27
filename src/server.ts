@@ -20,14 +20,14 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? [
-        'https://nss-frontend.vercel.app', 
-        'https://nss.vercel.app', 
-        'https://nationalsportsschool.vercel.app',
-        'https://nss-alpha.vercel.app',
-        'https://nss-git-main-nationalsportsschool.vercel.app',
-        'https://nss-nationalsportsschool.vercel.app'
-      ] 
+    ? (origin, callback) => {
+        // Allow any vercel.app domain or undefined (for same-origin requests)
+        if (!origin || origin.includes('.vercel.app') || origin.includes('localhost')) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      }
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true
 }));
