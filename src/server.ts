@@ -20,23 +20,14 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? (origin, callback) => {
-        // Allow specific production domain and any vercel.app domain
-        const allowedOrigins = [
-          'https://app.nationalsportsschool.in',  // Main production domain
-        ];
-        
-        if (!origin || 
-            allowedOrigins.includes(origin) || 
-            origin.includes('.vercel.app') || 
-            origin.includes('localhost')) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
-        }
-      }
+    ? [
+        'https://app.nationalsportsschool.in', // Primary production domain
+        'https://nss-frontend.vercel.app',
+        'https://nss.vercel.app',
+        'https://nationalsportsschool.vercel.app'
+      ]
     : ['http://localhost:5173', 'http://localhost:3000'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 
