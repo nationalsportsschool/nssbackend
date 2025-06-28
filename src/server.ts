@@ -22,7 +22,10 @@ const app = express();
 // Use the 'cors' package and allow only specific origins like https://app.nationalsportsschool.in
 // Also handle preflight requests for all routes
 app.use(cors({
-  origin: ['https://app.nationalsportsschool.in'], // Vercel frontend domain
+  origin: [
+    'https://app.nationalsportsschool.in', // Production frontend
+    'http://localhost:5173'                // Local development frontend
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
