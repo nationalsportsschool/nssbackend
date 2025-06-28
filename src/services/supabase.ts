@@ -375,8 +375,8 @@ export interface CoachAttendance {
 
 export class AttendanceService {
   static async getStudentAttendance(startDate?: string, endDate?: string): Promise<StudentAttendance[]> {
-    console.log('=== AttendanceService.getStudentAttendance ===');
-    console.log('Parameters - startDate:', startDate, 'endDate:', endDate);
+    console.log('🔍 AttendanceService.getStudentAttendance called');
+    console.log('📅 Date filters - Start:', startDate || 'No filter', 'End:', endDate || 'No filter');
     
     let query = supabase
       .from('student_attendance')
@@ -386,23 +386,22 @@ export class AttendanceService {
       `)
       .order('date', { ascending: false });
 
-    console.log('Base query constructed for student_attendance');
+    console.log('🏗️ Base query constructed for student_attendance');
 
     if (startDate) {
       query = query.gte('date', startDate);
-      console.log('Added startDate filter:', startDate);
+      console.log('🗓️ Added startDate filter:', startDate);
     }
     if (endDate) {
       query = query.lte('date', endDate);
-      console.log('Added endDate filter:', endDate);
+      console.log('🗓️ Added endDate filter:', endDate);
     }
 
-    console.log('Executing student attendance query...');
+    console.log('⚡ Executing student attendance query...');
     const { data, error } = await query;
 
     if (error) {
-      console.error('Error fetching student attendance:', error);
-      console.error('Error details:', {
+      console.error('❌ Student attendance query failed:', {
         code: error.code,
         message: error.message,
         details: error.details,
@@ -411,16 +410,19 @@ export class AttendanceService {
       throw new Error('Failed to fetch student attendance');
     }
 
-    console.log('Student attendance query successful');
-    console.log('Raw data count:', data?.length || 0);
-    console.log('Sample records:', data?.slice(0, 2));
+    console.log('✅ Student attendance query successful');
+    console.log('📊 Result summary:', {
+      total_records: data?.length || 0,
+      sample_dates: data?.slice(0, 3).map(d => d.date) || [],
+      sample_students: data?.slice(0, 3).map(d => d.student?.name || 'Unknown') || []
+    });
 
     return data || [];
   }
 
   static async getCoachAttendance(startDate?: string, endDate?: string): Promise<CoachAttendance[]> {
-    console.log('=== AttendanceService.getCoachAttendance ===');
-    console.log('Parameters - startDate:', startDate, 'endDate:', endDate);
+    console.log('🔍 AttendanceService.getCoachAttendance called');
+    console.log('📅 Date filters - Start:', startDate || 'No filter', 'End:', endDate || 'No filter');
     
     let query = supabase
       .from('coach_attendance')
@@ -430,23 +432,22 @@ export class AttendanceService {
       `)
       .order('date', { ascending: false });
 
-    console.log('Base query constructed for coach_attendance');
+    console.log('🏗️ Base query constructed for coach_attendance');
 
     if (startDate) {
       query = query.gte('date', startDate);
-      console.log('Added startDate filter:', startDate);
+      console.log('🗓️ Added startDate filter:', startDate);
     }
     if (endDate) {
       query = query.lte('date', endDate);
-      console.log('Added endDate filter:', endDate);
+      console.log('🗓️ Added endDate filter:', endDate);
     }
 
-    console.log('Executing coach attendance query...');
+    console.log('⚡ Executing coach attendance query...');
     const { data, error } = await query;
 
     if (error) {
-      console.error('Error fetching coach attendance:', error);
-      console.error('Error details:', {
+      console.error('❌ Coach attendance query failed:', {
         code: error.code,
         message: error.message,
         details: error.details,
@@ -455,9 +456,13 @@ export class AttendanceService {
       throw new Error('Failed to fetch coach attendance');
     }
 
-    console.log('Coach attendance query successful');
-    console.log('Raw data count:', data?.length || 0);
-    console.log('Sample records:', data?.slice(0, 2));
+    console.log('✅ Coach attendance query successful');
+    console.log('📊 Result summary:', {
+      total_records: data?.length || 0,
+      sample_dates: data?.slice(0, 3).map(d => d.date) || [],
+      sample_coaches: data?.slice(0, 3).map(d => d.coach?.name || 'Unknown') || [],
+      sample_sports: data?.slice(0, 3).map(d => d.coach?.sports || []) || []
+    });
 
     return data || [];
   }
