@@ -369,7 +369,7 @@ export interface CoachAttendance {
   updated_at: string;
   coach?: {
     name: string;
-    sport: string;
+    sports: string[];
   };
 }
 
@@ -405,7 +405,7 @@ export class AttendanceService {
       .from('coach_attendance')
       .select(`
         *,
-        coach:coaches(name, sport)
+        coach:coaches(name, sports)
       `)
       .order('date', { ascending: false });
 
@@ -529,7 +529,7 @@ export class AttendanceService {
         .eq('date', date)
         .select(`
           *,
-          coach:coaches(name, sport)
+          coach:coaches(name, sports)
         `)
         .single();
       
@@ -552,7 +552,7 @@ export class AttendanceService {
         ])
         .select(`
           *,
-          coach:coaches(name, sport)
+          coach:coaches(name, sports)
         `)
         .single();
       
