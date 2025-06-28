@@ -375,6 +375,9 @@ export interface CoachAttendance {
 
 export class AttendanceService {
   static async getStudentAttendance(startDate?: string, endDate?: string): Promise<StudentAttendance[]> {
+    console.log('=== AttendanceService.getStudentAttendance ===');
+    console.log('Parameters - startDate:', startDate, 'endDate:', endDate);
+    
     let query = supabase
       .from('student_attendance')
       .select(`
@@ -383,24 +386,42 @@ export class AttendanceService {
       `)
       .order('date', { ascending: false });
 
+    console.log('Base query constructed for student_attendance');
+
     if (startDate) {
       query = query.gte('date', startDate);
+      console.log('Added startDate filter:', startDate);
     }
     if (endDate) {
       query = query.lte('date', endDate);
+      console.log('Added endDate filter:', endDate);
     }
 
+    console.log('Executing student attendance query...');
     const { data, error } = await query;
 
     if (error) {
       console.error('Error fetching student attendance:', error);
+      console.error('Error details:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
       throw new Error('Failed to fetch student attendance');
     }
+
+    console.log('Student attendance query successful');
+    console.log('Raw data count:', data?.length || 0);
+    console.log('Sample records:', data?.slice(0, 2));
 
     return data || [];
   }
 
   static async getCoachAttendance(startDate?: string, endDate?: string): Promise<CoachAttendance[]> {
+    console.log('=== AttendanceService.getCoachAttendance ===');
+    console.log('Parameters - startDate:', startDate, 'endDate:', endDate);
+    
     let query = supabase
       .from('coach_attendance')
       .select(`
@@ -409,19 +430,34 @@ export class AttendanceService {
       `)
       .order('date', { ascending: false });
 
+    console.log('Base query constructed for coach_attendance');
+
     if (startDate) {
       query = query.gte('date', startDate);
+      console.log('Added startDate filter:', startDate);
     }
     if (endDate) {
       query = query.lte('date', endDate);
+      console.log('Added endDate filter:', endDate);
     }
 
+    console.log('Executing coach attendance query...');
     const { data, error } = await query;
 
     if (error) {
       console.error('Error fetching coach attendance:', error);
+      console.error('Error details:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
       throw new Error('Failed to fetch coach attendance');
     }
+
+    console.log('Coach attendance query successful');
+    console.log('Raw data count:', data?.length || 0);
+    console.log('Sample records:', data?.slice(0, 2));
 
     return data || [];
   }

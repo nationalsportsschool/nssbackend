@@ -11,12 +11,19 @@ export const getStudentAttendance = async (
   next: NextFunction
 ) => {
   try {
+    console.log('=== GET STUDENT ATTENDANCE REQUEST ===');
+    console.log('Query params:', req.query);
     const { startDate, endDate } = req.query;
+    console.log('Parsed dates - Start:', startDate, 'End:', endDate);
 
+    console.log('Calling AttendanceService.getStudentAttendance...');
     const attendance = await AttendanceService.getStudentAttendance(
       startDate as string,
       endDate as string
     );
+
+    console.log('Student attendance result count:', attendance?.length || 0);
+    console.log('First few records:', attendance?.slice(0, 2));
 
     res.status(200).json({
       success: true,
@@ -24,6 +31,7 @@ export const getStudentAttendance = async (
       data: attendance
     });
   } catch (error) {
+    console.error('Error in getStudentAttendance controller:', error);
     next(error);
   }
 };
@@ -38,12 +46,19 @@ export const getCoachAttendance = async (
   next: NextFunction
 ) => {
   try {
+    console.log('=== GET COACH ATTENDANCE REQUEST ===');
+    console.log('Query params:', req.query);
     const { startDate, endDate } = req.query;
+    console.log('Parsed dates - Start:', startDate, 'End:', endDate);
 
+    console.log('Calling AttendanceService.getCoachAttendance...');
     const attendance = await AttendanceService.getCoachAttendance(
       startDate as string,
       endDate as string
     );
+
+    console.log('Coach attendance result count:', attendance?.length || 0);
+    console.log('First few records:', attendance?.slice(0, 2));
 
     res.status(200).json({
       success: true,
@@ -51,6 +66,7 @@ export const getCoachAttendance = async (
       data: attendance
     });
   } catch (error) {
+    console.error('Error in getCoachAttendance controller:', error);
     next(error);
   }
 };
